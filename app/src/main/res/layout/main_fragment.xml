@@ -5,17 +5,68 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment">
+    tools:context=".ui.main.MainFragment"
+    android:background="@color/primaryColor"
+    >
 
     <TextView
-        android:id="@+id/message"
+        android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MainFragment"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/secondaryColor"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon"
+        tools:text="18" />
+
+    <TextView
+        android:id="@+id/temperatureUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/secondaryColor"
+
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/temperature"
+        app:layout_constraintStart_toEndOf="@+id/temperature"
+        android:text="@string/c" />
+
+    <TextView
+        android:id="@+id/windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondaryColor"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@+id/windUnit"
+        app:layout_constraintTop_toTopOf="@+id/temperature"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/windUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="48dp"
+        android:text="@string/m_s"
+        android:textColor="@color/secondaryColor"
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/windSpeed"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/currentWeatherIcon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
+        app:tint="@color/secondaryColor"
+        tools:src="@drawable/rain">
+
+    </ImageView>
 
     <TextView
         android:id="@+id/loadingInfo"
@@ -28,6 +79,36 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
         tools:visibility="visible"
+        android:textColor="@color/secondaryColor"
         />
+
+    <TextView
+        android:id="@+id/weatherDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginStart="48dp"
+        android:textColor="@color/secondaryColor"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="moderate rain" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/currentWeatherGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="temperatureUnit,temperature,currentWeatherIcon" />
+
+    <ImageView
+        android:id="@+id/windDirection"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_baseline_arrow_downward_24"
+        app:tint="@color/secondaryColor"
+        app:layout_constraintBottom_toBottomOf="@+id/windSpeed"
+        app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+        app:layout_constraintTop_toTopOf="@+id/windSpeed" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

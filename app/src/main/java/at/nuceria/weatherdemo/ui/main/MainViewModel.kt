@@ -12,8 +12,8 @@ class MainViewModel @Inject constructor(private val weatherRepository: WeatherRe
 
     private val location: Location = Location("dummy_provider").apply {
         // Location hardcoded for initial API testing
-        latitude = 47.076668
-        longitude = 15.421371
+        latitude = 48.2082
+        longitude = 16.3738
     }
 
     val weatherResult = weatherRepository.getWeather(location.latitude, location.longitude)
