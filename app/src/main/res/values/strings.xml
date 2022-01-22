@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WeatherDemo</string>
+    <string name="refreshing">Refreshing...</string>
 </resources>

@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import at.nuceria.weatherdemo.data.Result
+import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -32,7 +35,33 @@ class MainFragment : Fragment() {
         val view = binding.root
 
 
+        observeViewModel()
         return view
+    }
+
+    private fun observeViewModel(){
+        viewModel.weatherResult.observe(viewLifecycleOwner) {
+            when(it) {
+                is Result.Error -> showError(it.exception)
+                is Result.Loading -> showLoading()
+                is Result.Success -> showData(it.data)
+            }
+        }
+    }
+    
+
+    private fun showLoading() {
+        binding.loadingInfo.visibility = View.VISIBLE
+
+    }
+
+    private fun showData(weatherResult: WeatherResponse) {
+        binding.loadingInfo.visibility = View.GONE
+        binding.message.text = weatherResult.currentWeather.feelsLikeTemp.toString()
+    }
+
+    private fun showError(exception: Exception) {
+        binding.loadingInfo.visibility = View.GONE
     }
 
     override fun onDestroyView() {
