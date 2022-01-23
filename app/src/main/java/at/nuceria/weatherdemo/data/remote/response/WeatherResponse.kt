@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class WeatherResponse(
-    val lat: Float,
-    val lon: Float,
+    val lat: Double,
+    val lon: Double,
     @SerialName("current")
     val currentWeather: CurrentWeather,
     @SerialName("daily")
@@ -21,7 +21,7 @@ class WeatherResponse(
 @Serializable
 class CurrentWeather(
     @SerialName("dt")
-    val requestTimestamp: Int,
+    val requestTimestamp: Long,
     val temp: Float,
     @SerialName("feels_like")
     val feelsLikeTemp: Float,
@@ -30,13 +30,13 @@ class CurrentWeather(
     @SerialName("wind_deg")
     val windDegrees: Int,
     @SerialName("weather")
-    val weatherConditions: List<WeatherCondition>
+    val weathers: List<Weather>
 )
 
 @Serializable
 class DailyWeather(
     @SerialName("dt")
-    val dateTime: Int,
+    val dateTime: Long,
     @SerialName("temp")
     val dayTemperatures: DayTemperatures,
     @SerialName("feels_like")
@@ -46,7 +46,7 @@ class DailyWeather(
     @SerialName("wind_deg")
     val windDegrees: Int,
     @SerialName("weather")
-    val weatherConditions: List<WeatherCondition>
+    val weatherConditions: List<Weather>
 )
 
 @Serializable
@@ -68,8 +68,7 @@ class DayFeelsLikeTemperatures(
 )
 
 @Serializable
-class WeatherCondition(
+class Weather(
     val id: Int,
-    val main: String,
     val description: String
 )

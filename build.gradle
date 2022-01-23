@@ -12,6 +12,8 @@ buildscript {
         okhttp_version = '4.4.0'
         retrofit_version = '2.7.2'
         retrofit_converter_factory_version = '0.8.0'
+        room_version = '2.4.1'
+        joda_time_version = '2.10.13'
     }
 
     repositories {

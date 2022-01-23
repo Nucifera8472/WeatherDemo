@@ -8,9 +8,10 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import at.nuceria.weatherdemo.data.Result
-import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
+import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
+import at.nuceria.weatherdemo.util.Resource
+import at.nuceria.weatherdemo.util.getDayIcon
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.math.roundToInt
@@ -38,57 +39,58 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-
         observeViewModel()
         return view
     }
 
     private fun observeViewModel() {
-        viewModel.weatherResult.observe(viewLifecycleOwner) {
-            when (it) {
-                is Result.Error -> showError(it.exception)
-                is Result.Loading -> showLoading()
-                is Result.Success -> showData(it.data)
+        viewModel.weatherResult.observe(viewLifecycleOwner) { resource ->
+            if (resource.data != null) {
+                showData(resource.data)
+            } else {
+                // TODO show an empty/placeholder view
+            }
+
+            if (resource is Resource.Loading) {
+                if (resource.data != null) {
+                    binding.loadingInfo.visibility = View.VISIBLE
+                } else {
+                    binding.progressbar.visibility = View.VISIBLE
+                }
+            } else {
+                binding.loadingInfo.visibility = View.GONE
+                binding.progressbar.visibility = View.GONE
+            }
+
+            if (resource is Resource.Error) {
+                showError(resource.error)
             }
         }
     }
 
-
-    private fun showLoading() {
-        binding.loadingInfo.visibility = View.VISIBLE
-        binding.currentWeatherGroup.visibility = View.GONE
-
-
-    }
-
-    private fun showData(weatherResult: WeatherResponse) {
-        binding.loadingInfo.visibility = View.GONE
-        weatherResult.currentWeather.run {
+    private fun showData(weatherData: WeatherData) {
+        weatherData.currentWeatherData.run {
             binding.currentWeatherGroup.visibility = View.VISIBLE
             // we don't want to show decimals for the values
-            binding.temperature.text = temp.roundToInt().toString()
+            binding.temperature.text = temperature.roundToInt().toString()
             binding.windSpeed.text = windSpeed.roundToInt().toString()
             binding.windDirection.rotation = windDegrees.toFloat()
-            weatherConditions.firstOrNull()?.run {
-                binding.weatherDescription.text = description.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
-                }
-                setWeatherConditionIcon(getDayIcon())
+            binding.weatherDescription.text = localizedDescription.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
             }
+            condition.run { setWeatherConditionIcon(getDayIcon()) }
         }
-
     }
 
     private fun setWeatherConditionIcon(@DrawableRes int: Int) {
         context?.let {
             binding.currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(it, int))
-
         }
-
     }
 
-    private fun showError(exception: Exception) {
-        binding.loadingInfo.visibility = View.GONE
+    private fun showError(exception: Throwable?) {
+        // TODO create error view or show dialog
+        // show "you are offline" in case there is no network and the request failed
         binding.currentWeatherGroup.visibility = View.GONE
     }
 
