@@ -4,6 +4,7 @@ import androidx.lifecycle.liveData
 import at.nuceria.weatherdemo.BuildConfig
 import at.nuceria.weatherdemo.data.remote.WeatherService
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 class WeatherRepository @Inject constructor(
@@ -14,7 +15,7 @@ class WeatherRepository @Inject constructor(
     // only request the data that we plan on using in the app
     private val exclude = "alerts,minutely,hourly"
 
-    fun getWeather(lat: Double, lon: Double) = liveData {
+    fun getWeather(lat: Double, lon: Double) = liveData(Dispatchers.IO) {
         emit(Result.Loading())
         try {
             val response = fetchWeatherData(lat, lon)
