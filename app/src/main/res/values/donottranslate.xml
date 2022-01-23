@@ -2,4 +2,5 @@
 <resources>
     <string name="m_s">m/s</string>
     <string name="c">°C</string>
+    <string name="daily_temp">%1$s/%2$s°C</string>
 </resources>
