@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:background="@color/primaryLightColor"
+    android:background="@color/primaryLightColor"
+
+    >
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/secondaryColor"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/day"
+        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon"
+        tools:text="18/24" />
+
+    <TextView
+        android:id="@+id/day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/secondaryColor"
+        android:textSize="12sp"
+        android:textAllCaps="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/temperature"
+        tools:text="mon" />
+
+    <!--    <TextView-->
+<!--        android:id="@+id/windSpeed"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textColor="@color/secondaryColor"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/windUnit"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/temperature"-->
+<!--        tools:text="2" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/windUnit"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="48dp"-->
+<!--        android:text="@string/m_s"-->
+<!--        android:textColor="@color/secondaryColor"-->
+<!--        android:textSize="20sp"-->
+<!--        app:layout_constraintBaseline_toBaselineOf="@+id/windSpeed"-->
+<!--        app:layout_constraintEnd_toEndOf="parent" />-->
+
+    <ImageView
+        android:id="@+id/currentWeatherIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/secondaryColor"
+        tools:src="@drawable/rain">
+
+    </ImageView>
+
+<!--    <ImageView-->
+<!--        android:id="@+id/windDirection"-->
+<!--        android:layout_width="32dp"-->
+<!--        android:layout_height="32dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:src="@drawable/ic_baseline_arrow_downward_24"-->
+<!--        app:tint="@color/secondaryColor"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/windSpeed"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/windSpeed"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/windSpeed" />-->
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

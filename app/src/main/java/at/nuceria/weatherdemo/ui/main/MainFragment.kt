@@ -8,8 +8,11 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
+import at.nuceria.weatherdemo.util.MarginItemDecoration
 import at.nuceria.weatherdemo.util.Resource
 import at.nuceria.weatherdemo.util.getDayIcon
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +34,8 @@ class MainFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    val adapter = ForeCastTileAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,11 +44,31 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        //            binding.keyboardLanguageList.layoutManager =
+//                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+
+
+
         observeViewModel()
         return view
     }
 
     private fun observeViewModel() {
+
+
+        binding.forecastTiles.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            binding.forecastTiles.adapter = adapter
+
+
+            binding.forecastTiles.addItemDecoration(
+                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.tile_spacing))
+            )
+
+
+
+
         viewModel.weatherResult.observe(viewLifecycleOwner) { resource ->
             if (resource.data != null) {
                 showData(resource.data)
@@ -79,6 +104,14 @@ class MainFragment : Fragment() {
                 if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
             }
             condition.run { setWeatherConditionIcon(getDayIcon()) }
+        }
+
+        weatherData.forecastWeatherData.run {
+                adapter.submitList(this)
+
+
+
+
         }
     }
 
