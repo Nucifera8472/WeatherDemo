@@ -14,7 +14,7 @@ interface DailyWeatherDao {
     fun getForecastData(startDate: Long): List<DailyWeatherData>
 
     // observable flow, in case the entries are changed in the background by a worker for example
-    @Query("SELECT * FROM DailyWeatherData")
+    @Query("SELECT * FROM DailyWeatherData ORDER BY timeStamp ASC")
     fun getForecastDataFlow(): Flow<List<DailyWeatherData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -47,7 +47,7 @@ class WeatherRepository @Inject constructor(
         shouldFetch = {
             // we always want to fetch if the current weather data is older than 1 hour
             it == null ||
-                    DateTime.now().minusHours(1).isAfter(it.currentWeatherData.timeStamp)
+                    DateTime.now().minusHours(1).isAfter(it.currentWeatherData.timeStamp * 1000)
         },
     )
 
