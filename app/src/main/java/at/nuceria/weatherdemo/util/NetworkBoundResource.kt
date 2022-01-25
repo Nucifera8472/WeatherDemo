@@ -1,6 +1,7 @@
 package at.nuceria.weatherdemo.util
 
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 /**
  * A more modern version of Android's NetworkBoundResource class using kotlin flow.
@@ -12,6 +13,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
     crossinline saveFetchResult: suspend (RequestType) -> Unit,
     crossinline shouldFetch: (ResultType?) -> Boolean = { true }
 ) = flow {
+    Timber.d("START networkBoundResource flow")
     val data = query().first()
 
     val flow = if (shouldFetch(data)) {

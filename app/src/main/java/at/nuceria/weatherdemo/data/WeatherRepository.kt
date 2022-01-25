@@ -1,5 +1,6 @@
 package at.nuceria.weatherdemo.data
 
+import android.location.Location
 import androidx.room.withTransaction
 import at.nuceria.weatherdemo.BuildConfig
 import at.nuceria.weatherdemo.data.local.AppDatabase
@@ -14,8 +15,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import org.joda.time.DateTime
+import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class WeatherRepository @Inject constructor(
     private val weatherService: WeatherService,
     private val currentWeatherDao: CurrentWeatherDao,
@@ -27,13 +31,13 @@ class WeatherRepository @Inject constructor(
     // only request the data that we plan on using in the app
     private val exclude = "alerts,minutely,hourly"
 
-    fun getWeather(latitude: Double, longitude: Double) = networkBoundResource(
+    fun getWeather(location: Location) = networkBoundResource(
         query = {
             getWeatherDataFromDb()
         },
         fetch = {
             delay(2000)
-            fetchWeatherData(latitude, longitude)
+            fetchWeatherData(location)
         },
         saveFetchResult = { weatherResponse ->
             val weatherData = weatherResponse.toWeatherData()
@@ -64,8 +68,8 @@ class WeatherRepository @Inject constructor(
             }
     }
 
-    private suspend fun fetchWeatherData(lat: Double, lon: Double): WeatherResponse {
-        return weatherService.getWeatherData(lat, lon, exclude, apiKey)
+    private suspend fun fetchWeatherData(location: Location): WeatherResponse {
+        return weatherService.getWeatherData(location.latitude, location.longitude, exclude, apiKey)
     }
 
 
