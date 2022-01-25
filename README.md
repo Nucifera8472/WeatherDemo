@@ -24,6 +24,10 @@ Add your OpenWeatherMap api key to the `local.properties` file:
 
 - The layout is currently not optimized for smaller screens.
 
+## Known bugs
+
+- `misc.xml` which is supposed to be in source control changes all the time when using the design preview https://issuetracker.google.com/issues/192128532
+
 
 ## Attribution
 <a href="https://www.flaticon.com/free-icons/weather" title="weather icons">Weather icons created by Those Icons - Flaticon</a>
