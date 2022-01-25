@@ -7,15 +7,24 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
+import at.nuceria.weatherdemo.ui.WeatherViewModel
+import at.nuceria.weatherdemo.ui.forecast.ForecastsFragment
 import at.nuceria.weatherdemo.util.MarginItemDecoration
 import at.nuceria.weatherdemo.util.Resource
 import at.nuceria.weatherdemo.util.getDayIcon
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -26,7 +35,7 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by activityViewModels<WeatherViewModel>()
 
     private var _binding: MainFragmentBinding? = null
 
@@ -34,7 +43,7 @@ class MainFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    val adapter = ForeCastTileAdapter()
+    private val adapter = ForeCastTileAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,11 +53,27 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //            binding.keyboardLanguageList.layoutManager =
-//                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.more.setOnClickListener {
+            if (isAdded) {
+                parentFragmentManager.commit {
+                    setCustomAnimations(
+                        R.anim.slide_in_bottom,
+                        R.anim.slide_out_top,
+                        R.anim.slide_in_top,
+                        R.anim.slide_out_bottom
+                    )
+                    replace(R.id.container, ForecastsFragment())
+                    addToBackStack(null)
+                }
+            }
+        }
 
-
-
+        binding.forecastTiles.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.forecastTiles.adapter = adapter
+        binding.forecastTiles.addItemDecoration(
+            MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.forecast_tile_spacing))
+        )
 
         observeViewModel()
         return view
@@ -56,40 +81,40 @@ class MainFragment : Fragment() {
 
     private fun observeViewModel() {
 
+        Timber.d("Collect weather flow")
 
-        binding.forecastTiles.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            binding.forecastTiles.adapter = adapter
+        lifecycleScope.launch {
+            // repeatOnLifecycle launches the block in a new coroutine every time the
+            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Trigger the flow and start listening for values.
+                // Note that this happens when lifecycle is STARTED and stops
+                // collecting when the lifecycle is STOPPED
+                viewModel.weatherData.collect { onNewDataReceived(it) }
+            }
+        }
+    }
 
+    private fun onNewDataReceived(resource: Resource<out WeatherData?>) {
+        if (resource.data != null) {
+            showData(resource.data)
+        } else {
+            // TODO show an empty/placeholder view
+        }
 
-            binding.forecastTiles.addItemDecoration(
-                MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.tile_spacing))
-            )
-
-
-
-
-        viewModel.weatherResult.observe(viewLifecycleOwner) { resource ->
+        if (resource is Resource.Loading) {
             if (resource.data != null) {
-                showData(resource.data)
+                binding.loadingInfo.visibility = View.VISIBLE
             } else {
-                // TODO show an empty/placeholder view
+                binding.progressbar.visibility = View.VISIBLE
             }
+        } else {
+            binding.loadingInfo.visibility = View.GONE
+            binding.progressbar.visibility = View.GONE
+        }
 
-            if (resource is Resource.Loading) {
-                if (resource.data != null) {
-                    binding.loadingInfo.visibility = View.VISIBLE
-                } else {
-                    binding.progressbar.visibility = View.VISIBLE
-                }
-            } else {
-                binding.loadingInfo.visibility = View.GONE
-                binding.progressbar.visibility = View.GONE
-            }
-
-            if (resource is Resource.Error) {
-                showError(resource.error)
-            }
+        if (resource is Resource.Error) {
+            showError(resource.error)
         }
     }
 
@@ -107,9 +132,7 @@ class MainFragment : Fragment() {
         }
 
         weatherData.forecastWeatherData.run {
-                adapter.submitList(this)
-
-
+            adapter.submitList(this)
 
 
         }
