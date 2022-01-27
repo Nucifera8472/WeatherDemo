@@ -57,6 +57,7 @@ class ForecastsFragment : Fragment() {
                 resources.getDimensionPixelSize(R.dimen.day_forecast_page_spacing)
             )
         )
+        binding.viewOverflowPagerIndicator.attachToRecyclerView(binding.forecastsRecycler)
         snapHelper.attachToRecyclerView(binding.forecastsRecycler)
 
         lifecycleScope.launch {
@@ -64,9 +65,7 @@ class ForecastsFragment : Fragment() {
             // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 Timber.d("Collect weather flow")
-                // Trigger the flow and start listening for values.
-                // Note that this happens when lifecycle is STARTED and stops
-                // collecting when the lifecycle is STOPPED
+                // Start listening for values.
                 viewModel.weatherData.collect { onNewDataReceived(it) }
             }
         }

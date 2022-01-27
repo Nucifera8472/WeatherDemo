@@ -80,7 +80,7 @@ class DailyWeatherDataViewHolder(
         )
         // TODO display day of week or day from datetime
         itemBinding.day.text =
-            DateTime(item.timeStamp * 1000, DateTimeZone.UTC).dayOfWeek().asShortText
+            DateTime(item.timeStamp * 1000, DateTimeZone.UTC).dayOfWeek().asText
 
     }
 

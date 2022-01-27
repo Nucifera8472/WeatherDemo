@@ -84,6 +84,7 @@ dependencies {
     // https://mvnrepository.com/artifact/joda-time/joda-time
     implementation "joda-time:joda-time:$joda_time_version"
 
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
 
     testImplementation 'junit:junit:4.+'
     testImplementation "androidx.room:room-testing:$room_version"
