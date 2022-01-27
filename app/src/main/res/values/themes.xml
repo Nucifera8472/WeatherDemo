@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.WeatherDemo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="android:windowBackground">@color/primaryColor</item>
+        <item name="android:windowBackground">@color/primaryDarkColor</item>
         <item name="android:textColor">@color/secondaryColor</item>
         <!--        <item name="android:iconTint">@color/secondaryColor</item>-->
 

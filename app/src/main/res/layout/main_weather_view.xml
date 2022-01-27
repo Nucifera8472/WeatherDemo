@@ -98,7 +98,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_baseline_arrow_downward_24"
+        android:src="@drawable/navigation_outline"
         app:tint="@color/secondaryColor"
         app:layout_constraintBottom_toBottomOf="@+id/windSpeed"
         app:layout_constraintEnd_toStartOf="@+id/windSpeed"

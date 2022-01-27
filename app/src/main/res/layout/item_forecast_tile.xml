@@ -5,7 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     tools:background="@color/primaryLightColor"
-    android:background="@color/primaryLightColor"
+    android:background="@drawable/background_rectangle_6dp_rounded"
+    android:backgroundTint="@color/primaryColor"
+
 
     >
 

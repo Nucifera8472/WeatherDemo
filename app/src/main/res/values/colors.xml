@@ -4,12 +4,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
-    <color name="primaryColor">#0f083c</color>
-    <color name="primaryLightColor">#3b2f67</color>
-    <color name="primaryDarkColor">#000019</color>
-    <color name="secondaryColor">#fffe84</color>
-    <color name="secondaryLightColor">#ffffb6</color>
-    <color name="secondaryDarkColor">#cacb54</color>
+    <color name="primaryColor">#37474f</color>
+    <color name="primaryLightColor">#62727b</color>
+    <color name="primaryDarkColor">#102027</color>
+    <color name="secondaryColor">#fff59d</color>
+    <color name="secondaryLightColor">#ffffcf</color>
+    <color name="secondaryDarkColor">#cbc26d</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
 
 </resources>
