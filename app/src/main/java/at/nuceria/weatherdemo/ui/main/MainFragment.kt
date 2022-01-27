@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
+import at.nuceria.weatherdemo.location.LocationHandler
 import at.nuceria.weatherdemo.ui.WeatherViewModel
 import at.nuceria.weatherdemo.ui.forecast.ForecastsFragment
 import at.nuceria.weatherdemo.util.MarginItemDecoration
@@ -75,27 +77,13 @@ class MainFragment : Fragment() {
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.forecast_tile_spacing))
         )
 
-        observeViewModel()
+        requestPermissionLauncher.launch("android.permission.ACCESS_COARSE_LOCATION")
         return view
     }
 
-    private fun observeViewModel() {
-
-        Timber.d("Collect weather flow")
-
-        lifecycleScope.launch {
-            // repeatOnLifecycle launches the block in a new coroutine every time the
-            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // Trigger the flow and start listening for values.
-                // Note that this happens when lifecycle is STARTED and stops
-                // collecting when the lifecycle is STOPPED
-                viewModel.weatherData.collect { onNewDataReceived(it) }
-            }
-        }
-    }
 
     private fun onNewDataReceived(resource: Resource<out WeatherData?>) {
+        Timber.d("onNewDataReceived")
         if (resource.data != null) {
             showData(resource.data)
         } else {
@@ -145,6 +133,16 @@ class MainFragment : Fragment() {
     }
 
     private fun showError(exception: Throwable?) {
+        val message = when (exception) {
+            is LocationHandler.LocationNullError -> getString(R.string.your_location_could_not_be_determined)
+            else -> "Something went wrong. Please try again later"
+        }
+
+        showError(message)
+    }
+
+    private fun showError(message: String) {
+        Timber.e("ERROR: $message")
         // TODO create error view or show dialog
         // show "you are offline" in case there is no network and the request failed
         binding.currentWeatherGroup.visibility = View.GONE
@@ -154,5 +152,35 @@ class MainFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    // Register the permissions callback, which handles the user's response to the
+    // system permissions dialog. Save the return value, an instance of
+    // ActivityResultLauncher, as an instance variable.
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Timber.d("Permission Granted")
+
+                lifecycleScope.launch {
+                    // repeatOnLifecycle launches the block in a new coroutine every time the
+                    // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        // Trigger the flow and start listening for values.
+                        // Note that this happens when lifecycle is STARTED and stops
+                        // collecting when the lifecycle is STOPPED
+                        viewModel.weatherData.collect { onNewDataReceived(it) }
+                        viewModel.retrieveWeatherForCurrentLocation()
+                    }
+                }
+
+            } else {
+                // Explain to the user that the feature is unavailable because the
+                // features requires a permission that the user has denied. At the
+                // same time, respect the user's decision. Don't link to system
+                // settings in an effort to convince the user to change their
+                // decision.
+                showError(LocationHandler.MissingLocationPermissionError())
+            }
+        }
 
 }

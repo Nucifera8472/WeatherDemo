@@ -17,6 +17,7 @@ buildscript {
         joda_time_version = '2.10.13'
         mockk_version = '1.9.3'
         lifecycle_version = '2.4.0'
+        google_location_services = '19.0.1'
     }
 
     repositories {

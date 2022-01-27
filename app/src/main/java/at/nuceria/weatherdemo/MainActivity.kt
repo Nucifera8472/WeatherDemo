@@ -1,7 +1,7 @@
 package at.nuceria.weatherdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import at.nuceria.weatherdemo.ui.main.MainFragment
 import dagger.hilt.android.AndroidEntryPoint
 

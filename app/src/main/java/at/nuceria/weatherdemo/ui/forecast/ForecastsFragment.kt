@@ -17,11 +17,12 @@ import at.nuceria.weatherdemo.databinding.ForecastsFragmentBinding
 import at.nuceria.weatherdemo.ui.WeatherViewModel
 import at.nuceria.weatherdemo.util.MarginItemDecoration
 import at.nuceria.weatherdemo.util.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-
+@AndroidEntryPoint
 class ForecastsFragment : Fragment() {
 
     private val viewModel by activityViewModels<WeatherViewModel>()

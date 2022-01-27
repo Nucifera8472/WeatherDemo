@@ -15,8 +15,7 @@ import org.joda.time.DateTimeZone
 import kotlin.math.roundToInt
 
 class ForeCastTileAdapter() :
-    ListAdapter<DailyWeatherData, DailyWeatherDataViewHolder>(diffCallback),
-    DailyWeatherDataViewHolder.DialectInteractionListener {
+    ListAdapter<DailyWeatherData, DailyWeatherDataViewHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyWeatherDataViewHolder {
         val itemBinding =
@@ -24,18 +23,13 @@ class ForeCastTileAdapter() :
         return DailyWeatherDataViewHolder(itemBinding)
     }
 
-
     override fun onBindViewHolder(holder: DailyWeatherDataViewHolder, position: Int) {
         val item = currentList[position]
-
         holder.bind(item)
-
+        holder.itemView.setOnClickListener {
+            // show details for this tile
+        }
     }
-
-    override fun onItemClick(itemPosition: Int, viewHolder: DailyWeatherDataViewHolder) {
-        // TODO display item select, show details outside of list
-    }
-
     companion object {
         /**
          * This diff callback informs the PagedListAdapter how to compute list differences when new
@@ -64,7 +58,6 @@ class ForeCastTileAdapter() :
 
 class DailyWeatherDataViewHolder(
     private val itemBinding: ItemForecastTileBinding,
-//    var interactionListener: DialectInteractionListener
 ) :
     RecyclerView.ViewHolder(itemBinding.root) {
 
@@ -78,25 +71,8 @@ class DailyWeatherDataViewHolder(
             item.minTemperature.roundToInt(),
             item.maxTemperature.roundToInt()
         )
-        // TODO display day of week or day from datetime
-        itemBinding.day.text = DateTime(item.timeStamp *1000, DateTimeZone.UTC).dayOfWeek().asShortText
-
-    }
-
-    interface DialectInteractionListener {
-        fun onItemClick(
-            itemPosition: Int,
-            viewHolder: DailyWeatherDataViewHolder
-        )
-    }
-
-    init {
-        itemBinding.root.setOnClickListener {
-//            interactionListener.onItemClick(
-//                bindingAdapterPosition,
-//                this@DailyWeatherDataViewHolder
-//            )
-        }
+        itemBinding.day.text =
+            DateTime(item.timeStamp * 1000, DateTimeZone.UTC).dayOfWeek().asShortText
     }
 }
 

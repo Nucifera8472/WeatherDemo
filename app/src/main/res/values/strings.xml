@@ -2,4 +2,5 @@
     <string name="app_name">WeatherDemo</string>
     <string name="refreshing">Refreshing…</string>
     <string name="more">More</string>
+    <string name="your_location_could_not_be_determined">Your location could not be determined</string>
 </resources>
