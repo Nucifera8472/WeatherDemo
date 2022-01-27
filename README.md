@@ -31,3 +31,4 @@ Add your OpenWeatherMap api key to the `local.properties` file:
 
 ## Attribution
 <a href="https://www.flaticon.com/free-icons/weather" title="weather icons">Weather icons created by Those Icons - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/sun" title="sun icons">Sun icons created by Freepik - Flaticon</a>
