@@ -8,12 +8,14 @@ import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.location.LocationHandler
 import at.nuceria.weatherdemo.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.lang.RuntimeException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,25 +33,20 @@ class WeatherViewModel @Inject constructor(
     // retained across configuration changes
     val weatherData: StateFlow<Resource<out WeatherData?>> = _weatherData
 
+    private val coroutineExceptionHandler = CoroutineExceptionHandler { _, exception ->
+        _weatherData.value = Resource.Error(exception)
+    }
 
-    fun retrieveWeatherForCurrentLocation() = viewModelScope.launch(Dispatchers.IO) {
-
-        when (val currentLocation = locationHandler.getCurrentLocation()) {
-            is Resource.Error -> _weatherData.value =
-                Resource.Error(currentLocation.error ?: Exception())
-            is Resource.Loading -> {}
-            is Resource.Success -> {
-                currentLocation.data?.let {
-                    retrieveWeatherForLocation(it)
-                } ?: kotlin.run { _weatherData.value = Resource.Error(Exception()) }
-            }
+    suspend fun retrieveWeatherForCurrentLocation() =
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            Timber.d("Retrieve weather for current location")
+            val currentLocation = locationHandler.getCurrentLocation()
+            retrieveWeatherForLocation(currentLocation)
         }
 
-
-    }
-
-    fun retrieveWeatherForLocation(location: Location) = viewModelScope.launch(Dispatchers.IO) {
-        weatherRepository.getWeather(location)
-            .collect { output -> _weatherData.value = output }
-    }
+    fun retrieveWeatherForLocation(location: Location) =
+        viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+            weatherRepository.getWeather(location)
+                .collect { output -> _weatherData.value = output }
+        }
 }

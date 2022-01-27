@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -55,7 +56,7 @@ class MainFragment : Fragment() {
         _binding = MainFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        binding.more.setOnClickListener {
+        binding.weatherResultView.more.setOnClickListener {
             if (isAdded) {
                 parentFragmentManager.commit {
                     setCustomAnimations(
@@ -70,12 +71,15 @@ class MainFragment : Fragment() {
             }
         }
 
-        binding.forecastTiles.layoutManager =
+        binding.weatherResultView.forecastTiles.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.forecastTiles.adapter = adapter
-        binding.forecastTiles.addItemDecoration(
+        binding.weatherResultView.forecastTiles.adapter = adapter
+        binding.weatherResultView.forecastTiles.addItemDecoration(
             MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.forecast_tile_spacing))
         )
+
+        binding.weatherResultView.root.visibility = View.GONE
+        binding.errorView.root.visibility = View.GONE
 
         requestPermissionLauncher.launch("android.permission.ACCESS_COARSE_LOCATION")
         return view
@@ -85,9 +89,10 @@ class MainFragment : Fragment() {
     private fun onNewDataReceived(resource: Resource<out WeatherData?>) {
         Timber.d("onNewDataReceived")
         if (resource.data != null) {
+            binding.weatherResultView.root.visibility = View.VISIBLE
             showData(resource.data)
         } else {
-            // TODO show an empty/placeholder view
+            binding.weatherResultView.root.visibility = View.GONE
         }
 
         if (resource is Resource.Loading) {
@@ -101,22 +106,27 @@ class MainFragment : Fragment() {
             binding.progressbar.visibility = View.GONE
         }
 
-        if (resource is Resource.Error) {
+        if (resource is Resource.Error && resource.data == null) {
+            binding.errorView.root.visibility = View.VISIBLE
             showError(resource.error)
+        } else {
+            binding.errorView.root.visibility = View.GONE
         }
     }
 
     private fun showData(weatherData: WeatherData) {
-        weatherData.currentWeatherData.run {
-            binding.currentWeatherGroup.visibility = View.VISIBLE
-            // we don't want to show decimals for the values
-            binding.temperature.text = temperature.roundToInt().toString()
-            binding.windSpeed.text = windSpeed.roundToInt().toString()
-            binding.windDirection.rotation = windDegrees.toFloat()
-            binding.weatherDescription.text = localizedDescription.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
+        weatherData.currentWeatherData.let { data ->
+            binding.weatherResultView.run {
+                root.visibility = View.VISIBLE
+                // we don't want to show decimals for the values
+                temperature.text = data.temperature.roundToInt().toString()
+                windSpeed.text = data.windSpeed.roundToInt().toString()
+                windDirection.rotation = data.windDegrees.toFloat()
+                weatherDescription.text = data.localizedDescription.replaceFirstChar {
+                    if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
+                }
+                data.condition.run { setWeatherConditionIcon(getDayIcon()) }
             }
-            condition.run { setWeatherConditionIcon(getDayIcon()) }
         }
 
         weatherData.forecastWeatherData.run {
@@ -128,7 +138,12 @@ class MainFragment : Fragment() {
 
     private fun setWeatherConditionIcon(@DrawableRes int: Int) {
         context?.let {
-            binding.currentWeatherIcon.setImageDrawable(ContextCompat.getDrawable(it, int))
+            binding.weatherResultView.currentWeatherIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    it,
+                    int
+                )
+            )
         }
     }
 
@@ -145,7 +160,8 @@ class MainFragment : Fragment() {
         Timber.e("ERROR: $message")
         // TODO create error view or show dialog
         // show "you are offline" in case there is no network and the request failed
-        binding.currentWeatherGroup.visibility = View.GONE
+        binding.errorView.message.text = message
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {
@@ -160,19 +176,15 @@ class MainFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 Timber.d("Permission Granted")
-
                 lifecycleScope.launch {
                     // repeatOnLifecycle launches the block in a new coroutine every time the
                     // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
                     repeatOnLifecycle(Lifecycle.State.STARTED) {
                         // Trigger the flow and start listening for values.
-                        // Note that this happens when lifecycle is STARTED and stops
-                        // collecting when the lifecycle is STOPPED
-                        viewModel.weatherData.collect { onNewDataReceived(it) }
                         viewModel.retrieveWeatherForCurrentLocation()
+                        viewModel.weatherData.collect { onNewDataReceived(it) }
                     }
                 }
-
             } else {
                 // Explain to the user that the feature is unavailable because the
                 // features requires a permission that the user has denied. At the
