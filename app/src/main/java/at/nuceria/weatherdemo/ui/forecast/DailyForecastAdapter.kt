@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.databinding.DailyForecastBinding
+import at.nuceria.weatherdemo.util.epochToLocalTime
 import at.nuceria.weatherdemo.util.getDayIcon
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -78,9 +79,8 @@ class DailyWeatherDataViewHolder(
             item.minTemperature.roundToInt(),
             item.maxTemperature.roundToInt()
         )
-        // TODO display day of week or day from datetime
-        itemBinding.day.text =
-            DateTime(item.timeStamp * 1000, DateTimeZone.UTC).dayOfWeek().asText
+
+        itemBinding.day.text = item.timeStamp.epochToLocalTime(item.timezoneId)?.dayOfWeek()?.asText
 
     }
 

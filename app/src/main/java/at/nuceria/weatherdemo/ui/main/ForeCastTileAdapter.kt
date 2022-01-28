@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.databinding.ItemForecastTileBinding
+import at.nuceria.weatherdemo.util.epochToDateTime
+import at.nuceria.weatherdemo.util.epochToLocalTime
 import at.nuceria.weatherdemo.util.getDayIcon
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
@@ -71,8 +73,7 @@ class DailyWeatherDataViewHolder(
             item.minTemperature.roundToInt(),
             item.maxTemperature.roundToInt()
         )
-        itemBinding.day.text =
-            DateTime(item.timeStamp * 1000, DateTimeZone.UTC).dayOfWeek().asShortText
+        itemBinding.day.text = item.timeStamp.epochToLocalTime(item.timezoneId)?.dayOfWeek()?.asShortText
     }
 }
 

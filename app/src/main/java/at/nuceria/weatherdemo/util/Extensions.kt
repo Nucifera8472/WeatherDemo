@@ -105,3 +105,17 @@ fun Weather.toWeatherCondition(): WeatherCondition {
         }
     }
 }
+
+
+/**
+ * @return null if the zone ID is invalid
+ */
+fun Long.epochToLocalTime(zoneId: String): DateTime? = try {
+    epochToDateTime().withZone(DateTimeZone.forID(zoneId))
+} catch (e: Exception) {
+    null
+}
+
+fun Long.epochToDateTime(): DateTime = DateTime(epochToMillis(), DateTimeZone.UTC)
+
+fun Long.epochToMillis(): Long = this * 1000

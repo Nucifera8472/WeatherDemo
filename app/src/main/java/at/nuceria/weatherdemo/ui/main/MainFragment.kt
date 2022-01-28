@@ -120,8 +120,8 @@ class MainFragment : Fragment() {
                 root.visibility = View.VISIBLE
                 // we don't want to show decimals for the values
                 temperature.text = data.temperature.roundToInt().toString()
-                windSpeed.text = data.windSpeed.roundToInt().toString()
-                windDirection.rotation = data.windDegrees.toFloat() + 180 // the icon is "upside down"
+                wind.windSpeed.text = data.windSpeed.roundToInt().toString()
+                wind.windDirection.rotation = data.windDegrees.toFloat() + 180 // the icon is "upside down"
                 weatherDescription.text = data.localizedDescription.replaceFirstChar {
                     if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
                 }
