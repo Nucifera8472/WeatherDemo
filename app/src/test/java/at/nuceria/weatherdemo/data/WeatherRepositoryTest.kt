@@ -1,5 +1,6 @@
 package at.nuceria.weatherdemo.data
 
+import android.location.Location
 import androidx.room.withTransaction
 import at.nuceria.weatherdemo.data.TestData.currentWeatherResponse
 import at.nuceria.weatherdemo.data.TestData.outdatedWeatherResponse
@@ -35,8 +36,10 @@ class WeatherRepositoryTest {
     private val mockCurrentWeatherDao = mockk<CurrentWeatherDao>()
     private val mockDailyWeatherDao = mockk<DailyWeatherDao>()
     private val mockAppDatabase = mockk<AppDatabase>()
-    private val latitude = 22.2
-    private val longitude = 44.4
+    private val location = Location("dummy").apply {
+        latitude = 22.2
+        longitude = 44.4
+    }
 
     private val sut =
         WeatherRepository(mockService, mockCurrentWeatherDao, mockDailyWeatherDao, mockAppDatabase)
@@ -70,7 +73,7 @@ class WeatherRepositoryTest {
             givenApiResponse()
 
             // CALL TEST FUNCTION
-            val weatherDataFlow = sut.getWeather(latitude, longitude)
+            val weatherDataFlow = sut.getWeather(location)
 
             // ASSERTS
             val flowResponses = mutableListOf<Resource<out WeatherData?>>()
@@ -96,7 +99,7 @@ class WeatherRepositoryTest {
         givenApiResponse()
 
         // CALL TEST FUNCTION
-        val weatherDataFlow = sut.getWeather(latitude, longitude)
+        val weatherDataFlow = sut.getWeather(location)
 
         // ASSERTS
         val flowResponses = mutableListOf<Resource<out WeatherData?>>()
@@ -134,7 +137,7 @@ class WeatherRepositoryTest {
             }
 
             // CALL TEST FUNCTION
-            val weatherDataFlow = sut.getWeather(latitude, longitude)
+            val weatherDataFlow = sut.getWeather(location)
 
             // ASSERTS
             val flowResponses = mutableListOf<Resource<out WeatherData?>>()
@@ -160,7 +163,7 @@ class WeatherRepositoryTest {
             givenApiError()
 
             // CALL TEST FUNCTION
-            val weatherDataFlow = sut.getWeather(latitude, longitude)
+            val weatherDataFlow = sut.getWeather(location)
 
             // ASSERTS
             val flowResponses = mutableListOf<Resource<out WeatherData?>>()
@@ -175,7 +178,10 @@ class WeatherRepositoryTest {
             // FLOW_2: success state with expected data returned
             assertTrue(flowResponses[1] is Resource.Error)
             assertNull(flowResponses[1].data) // saved data returned
-            assertEquals(400,(flowResponses[1].error as HttpException).code()) // api exception returned
+            assertEquals(
+                400,
+                (flowResponses[1].error as HttpException).code()
+            ) // api exception returned
         }
 
     @Test
@@ -190,7 +196,7 @@ class WeatherRepositoryTest {
     }
 
     private fun verifyApiFetch() {
-        coVerify { mockService.getWeatherData(latitude, longitude, any(), any()) }
+        coVerify { mockService.getWeatherData(location.latitude, location.longitude, any(), any()) }
     }
 
     private fun verifyDataSaved(weatherData: WeatherData) {
