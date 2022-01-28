@@ -21,6 +21,7 @@ object RoomModule {
     @Provides
     internal fun providesRoomDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, "app-db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 
