@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content"
-    android:background="@color/primaryLightColor"
+    android:background="@drawable/background_rectangle_6dp_rounded"
+    android:backgroundTint="@color/primaryColor"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

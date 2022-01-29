@@ -4,7 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/primaryLightColor"
+    android:background="@drawable/background_rectangle_6dp_rounded"
+    android:backgroundTint="@color/primaryColor"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+
+
 
     >
 
@@ -22,8 +29,6 @@
         android:id="@+id/day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
         android:textSize="12sp"
         android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,9 +61,6 @@
         android:id="@+id/currentWeatherIcon"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
