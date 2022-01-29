@@ -7,12 +7,13 @@ import at.nuceria.weatherdemo.data.TestData.outdatedWeatherResponse
 import at.nuceria.weatherdemo.data.local.AppDatabase
 import at.nuceria.weatherdemo.data.local.CurrentWeatherDao
 import at.nuceria.weatherdemo.data.local.DailyWeatherDao
+import at.nuceria.weatherdemo.data.managers.WeatherRepository
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.data.remote.WeatherService
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
 import at.nuceria.weatherdemo.util.Resource
-import at.nuceria.weatherdemo.util.toWeatherData
+import at.nuceria.weatherdemo.data.local.toWeatherData
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf

@@ -10,9 +10,7 @@ import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.databinding.DailyForecastBinding
 import at.nuceria.weatherdemo.util.epochToLocalTime
-import at.nuceria.weatherdemo.util.getDayIcon
-import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
+import at.nuceria.weatherdemo.data.local.getDayIcon
 import kotlin.math.roundToInt
 
 class DailyForecastAdapter :

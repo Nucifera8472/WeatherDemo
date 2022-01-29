@@ -1,11 +1,9 @@
 package at.nuceria.weatherdemo.util
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Test
 
-class ExtensionsKtTest {
-
+class DateTimeExtensionsKtTest {
     private val epochTimeStamp = 1643392688L // 2022-01-28_17:58Z
 
     @Test
@@ -27,5 +25,17 @@ class ExtensionsKtTest {
         assertEquals(2022, localTime.year)
         assertEquals(1, localTime.monthOfYear)
         assertEquals(28, localTime.dayOfMonth)
+    }
+
+    @Test
+    fun dateTimeTo24hString() {
+        val time = epochTimeStamp.epochToDateTime()
+        assertEquals("17:58", time.to24hTime())
+    }
+
+    @Test
+    fun dateTimeTo12hString() {
+        val time = epochTimeStamp.epochToDateTime()
+        assertEquals("5.58 PM", time.to12hTime())
     }
 }

@@ -1,7 +1,9 @@
 package at.nuceria.weatherdemo.data.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import at.nuceria.weatherdemo.util.epochToLocalTime
 
 /**
  *
@@ -11,6 +13,7 @@ import androidx.room.PrimaryKey
 data class CurrentWeatherData(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val timeStamp: Long,
+    val timezoneId: String,
     val latitude: Double,
     val longitude: Double,
     val temperature: Float,
@@ -18,15 +21,13 @@ data class CurrentWeatherData(
     val windSpeed: Float,
     val windDegrees: Int,
     val condition: WeatherCondition,
-    val localizedDescription: String
-
-//    val rainAmount: Float,
-//    val pressure: Int,
-//    val humidity: Int,
-//    val dewPoint: Float,
+    val localizedDescription: String,
+    val precipitationAmount: Float,
+    val pressure: Int,
+    val humidity: Int,
 //    val uvIndex: Float,
-    // useful so that we can show the timestamp in weather location time once we support other cities,
-    // or when the user travels between timezones
-//    val timeZoneOffset: Int,
-)
+) {
+    @Ignore
+    val localDateTime = timeStamp.epochToLocalTime(timezoneId)
+}
 

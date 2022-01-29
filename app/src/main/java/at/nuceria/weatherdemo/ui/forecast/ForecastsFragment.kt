@@ -79,7 +79,7 @@ class ForecastsFragment : Fragment() {
             // TODO show an empty/placeholder view
         }
 
-        if (resource is Resource.Loading) {
+        if (resource is Resource.Loading && resource.data == null) {
             binding.progressbar.visibility = View.VISIBLE
         } else {
             binding.progressbar.visibility = View.GONE

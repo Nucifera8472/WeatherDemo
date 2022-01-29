@@ -1,13 +1,16 @@
-package at.nuceria.weatherdemo.util
+package at.nuceria.weatherdemo.data.local
 
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.CurrentWeatherData
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.data.model.WeatherCondition
 import at.nuceria.weatherdemo.data.model.WeatherData
+import at.nuceria.weatherdemo.data.remote.response.CurrentWeather
 import at.nuceria.weatherdemo.data.remote.response.Weather
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
+import at.nuceria.weatherdemo.util.epochToLocalTime
 import timber.log.Timber
+
 
 /**
  * Maps weather condition ids to local icons
@@ -23,7 +26,7 @@ fun WeatherCondition.getDayIcon(): Int {
         WeatherCondition.THUNDER_STORM -> R.drawable.storm
         WeatherCondition.SNOW -> R.drawable.snow
         WeatherCondition.MIST -> R.drawable.fog
-        WeatherCondition.FREEZING_RAIN -> R.drawable.snow  // TODO switch icon
+        WeatherCondition.FREEZING_RAIN -> R.drawable.snowflake
     }
 }
 
@@ -31,6 +34,7 @@ fun WeatherResponse.toWeatherData(): WeatherData {
     val dailyWeatherData = dailyWeather.map {
         DailyWeatherData(
             timeStamp = it.dateTime,
+            timezoneId = this.timezoneId,
             latitude = lat,
             longitude = lon,
             morningTemperature = it.dayTemperatures.morn,
@@ -46,15 +50,26 @@ fun WeatherResponse.toWeatherData(): WeatherData {
             condition = it.weatherConditions.first().toWeatherCondition(),
             localizedDescription = it.weatherConditions.first().description,
             windSpeed = it.windSpeed,
-            windDegrees = it.windDegrees
+            windDegrees = it.windDegrees,
+            dewPoint = it.dewPoint,
+            sunrise = it.sunrise,
+            sunset = it.sunset,
+            moonrise = it.moonrise,
+            moonset = it.moonset,
+            moonPhase = it.moonPhase,
+            precipitationProbability = it.precipitationProbability,
+            precipitationAmount = it.rain?: 0f + (it.snow ?: 0f),
+            pressure = it.pressure,
+            humidity = it.humidity,
         )
     }
 
-    val weather = currentWeather.weathers.first()
+    val weather = currentWeather.weatherConditions.first()
 
     val currentWeatherData = CurrentWeatherData(
         id = 0,
         timeStamp = currentWeather.requestTimestamp,
+        timezoneId = timezoneId,
         latitude = lat,
         longitude = lon,
         temperature = currentWeather.temp,
@@ -62,7 +77,10 @@ fun WeatherResponse.toWeatherData(): WeatherData {
         windSpeed = currentWeather.windSpeed,
         windDegrees = currentWeather.windDegrees,
         condition = weather.toWeatherCondition(),
-        localizedDescription = weather.description
+        localizedDescription = weather.description,
+        precipitationAmount = currentWeather.rain?.lastHourAmount ?: 0f + (currentWeather.snow?.lastHourAmount ?: 0f),
+        pressure = currentWeather.pressure,
+        humidity = currentWeather.humidity
     )
 
     val todayOverview = dailyWeatherData.first()
@@ -105,17 +123,3 @@ fun Weather.toWeatherCondition(): WeatherCondition {
         }
     }
 }
-
-
-/**
- * @return null if the zone ID is invalid
- */
-fun Long.epochToLocalTime(zoneId: String): DateTime? = try {
-    epochToDateTime().withZone(DateTimeZone.forID(zoneId))
-} catch (e: Exception) {
-    null
-}
-
-fun Long.epochToDateTime(): DateTime = DateTime(epochToMillis(), DateTimeZone.UTC)
-
-fun Long.epochToMillis(): Long = this * 1000

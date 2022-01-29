@@ -5,57 +5,66 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainFragment"
-    >
+    tools:context=".ui.main.MainFragment">
+
+
+    <TextView
+        android:id="@+id/weatherDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Light intensity drizzle" />
 
     <TextView
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
-        android:textSize="36sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon"
+        android:layout_marginEnd="4dp"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toStartOf="@+id/temperatureUnit"
+        app:layout_constraintTop_toTopOf="@+id/currentWeatherIcon"
         tools:text="18" />
 
     <TextView
         android:id="@+id/temperatureUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
 
+        android:layout_marginEnd="32dp"
+        android:text="@string/c"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/temperature"
-        app:layout_constraintStart_toEndOf="@+id/temperature"
-        android:text="@string/c" />
-
-    <TextView
-        android:id="@+id/windSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toStartOf="@+id/windUnit"
-        app:layout_constraintTop_toTopOf="@+id/temperature"
-        tools:text="2" />
-
-    <TextView
-        android:id="@+id/windUnit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
-        android:text="@string/m_s"
-        android:textSize="20sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/windSpeed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/temperature"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/wind"
+        layout="@layout/view_current_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/temperatureUnit"
+        app:layout_constraintTop_toBottomOf="@+id/temperature" />
+
+    <include
+        android:id="@+id/precipitation"
+        layout="@layout/view_current_precipitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/temperatureUnit"
+        app:layout_constraintTop_toBottomOf="@+id/wind" />
 
 
     <ImageView
         android:id="@+id/currentWeatherIcon"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/weatherDescription"
         app:tint="@color/secondaryColor"
@@ -63,80 +72,101 @@
 
     </ImageView>
 
-    <TextView
-        android:id="@+id/loadingInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/refreshing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        tools:visibility="visible"
-        />
 
-    <TextView
-        android:id="@+id/weatherDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:layout_marginStart="48dp"
-        android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Light intensity drizzle" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/currentWeatherGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="temperatureUnit,temperature,currentWeatherIcon" />
-
-    <ImageView
-        android:id="@+id/windDirection"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_baseline_arrow_downward_24"
-        app:tint="@color/secondaryColor"
-        app:layout_constraintBottom_toBottomOf="@+id/windSpeed"
-        app:layout_constraintEnd_toStartOf="@+id/windSpeed"
-        app:layout_constraintTop_toTopOf="@+id/windSpeed" />
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/secondaryDarkColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon" />
+
+    <include
+        android:id="@+id/details"
+        layout="@layout/view_current_weather_details"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+
+    <!--    <View-->
+    <!--        android:id="@+id/forecastPanel"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+
+    <!--        android:layout_marginTop="300dp"-->
+    <!--        android:background="@color/primaryLightColor"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forecastTiles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/more"
+        app:layout_constraintBottom_toTopOf="@+id/more"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_forecast_tile" />
 
-    <Button
-        style="@style/Widget.AppCompat.Button.Borderless"
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageView"-->
+    <!--        android:layout_width="40dp"-->
+    <!--        android:layout_height="40dp"-->
+    <!--        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/forecastPanel"-->
+    <!--        app:tint="@color/secondaryColor" />-->
+
+
+    <ImageView
         android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/more"
+        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/secondaryColor" />
+
+
+    <TextView
+        android:id="@+id/loadingInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/refreshing"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
+
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

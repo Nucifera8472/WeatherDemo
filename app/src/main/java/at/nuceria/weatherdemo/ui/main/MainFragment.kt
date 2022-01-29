@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
@@ -16,20 +17,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.nuceria.weatherdemo.R
+import at.nuceria.weatherdemo.data.local.getDayIcon
+import at.nuceria.weatherdemo.data.location.LocationHandler
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.MainFragmentBinding
-import at.nuceria.weatherdemo.location.LocationHandler
 import at.nuceria.weatherdemo.ui.WeatherViewModel
 import at.nuceria.weatherdemo.ui.forecast.ForecastsFragment
 import at.nuceria.weatherdemo.util.MarginItemDecoration
 import at.nuceria.weatherdemo.util.Resource
-import at.nuceria.weatherdemo.util.getDayIcon
+import at.nuceria.weatherdemo.util.to24hTime
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 import kotlin.math.roundToInt
+
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
@@ -47,6 +50,27 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter = ForeCastTileAdapter()
+
+    // coarse location permission callback
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                Timber.d("Permission Granted")
+                lifecycleScope.launch {
+                    // repeatOnLifecycle launches the block in a new coroutine every time the
+                    // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
+                    repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        // Trigger the flow and start listening for values.
+                        viewModel.retrieveWeatherForCurrentLocation()
+                        viewModel.weatherData.collect { onNewDataReceived(it) }
+                    }
+                }
+            } else {
+                // Explain to the user that the feature is unavailable because the
+                // features requires a permission that the user has denied.
+                showError(LocationHandler.MissingLocationPermissionError())
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,11 +145,50 @@ class MainFragment : Fragment() {
                 // we don't want to show decimals for the values
                 temperature.text = data.temperature.roundToInt().toString()
                 wind.windSpeed.text = data.windSpeed.roundToInt().toString()
-                wind.windDirection.rotation = data.windDegrees.toFloat() + 180 // the icon is "upside down"
+                wind.windDirection.rotation =
+                    data.windDegrees.toFloat() + 180 // the icon is "upside down"
                 weatherDescription.text = data.localizedDescription.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.ENGLISH) else it.toString()
+                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
                 }
-                data.condition.run { setWeatherConditionIcon(getDayIcon()) }
+                precipitation.precipitationAmount.text =
+                    if (data.precipitationAmount == 0f) "0"
+                    else String.format("%.1f", data.precipitationAmount)
+                details.sunupTime.text = weatherData.todayOverView.localSunrise?.to24hTime()
+                details.sunDownTime.text = weatherData.todayOverView.localSunset?.to24hTime()
+                details.dailyCondition.text =
+                    weatherData.todayOverView.localizedDescription.replaceFirstChar {
+                        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+                    }
+                details.minTemperature.text = getString(
+                    R.string._c,
+                    weatherData.todayOverView.minTemperature.roundToInt().toString()
+                )
+                details.maxTemperature.text = getString(
+                    R.string._c,
+                    weatherData.todayOverView.maxTemperature.roundToInt().toString()
+                )
+                details.precipitationProbability.text = getString(
+                    R.string.percent,
+                    (weatherData.todayOverView.precipitationProbability * 100).roundToInt()
+                        .toString()
+                )
+                details.precipitationAmount.text = getString(
+                    R.string._mm,
+                    if (weatherData.todayOverView.precipitationAmount == 0f) "0"
+                    else String.format("%.1f", weatherData.todayOverView.precipitationAmount)
+                )
+                data.condition.run {
+                    setWeatherConditionIcon(
+                        binding.weatherResultView.currentWeatherIcon,
+                        getDayIcon()
+                    )
+                }
+                weatherData.todayOverView.condition.run {
+                    setWeatherConditionIcon(
+                        details.dailyConditionIcon,
+                        getDayIcon()
+                    )
+                }
             }
         }
 
@@ -136,9 +199,9 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setWeatherConditionIcon(@DrawableRes int: Int) {
+    private fun setWeatherConditionIcon(icon: ImageView, @DrawableRes int: Int) {
         context?.let {
-            binding.weatherResultView.currentWeatherIcon.setImageDrawable(
+            icon.setImageDrawable(
                 ContextCompat.getDrawable(
                     it,
                     int
@@ -148,8 +211,10 @@ class MainFragment : Fragment() {
     }
 
     private fun showError(exception: Throwable?) {
+        Timber.e(exception)
         val message = when (exception) {
             is LocationHandler.LocationNullError -> getString(R.string.your_location_could_not_be_determined)
+            is LocationHandler.MissingLocationPermissionError -> ""
             else -> "Something went wrong. Please try again later"
         }
 
@@ -168,31 +233,4 @@ class MainFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    // Register the permissions callback, which handles the user's response to the
-    // system permissions dialog. Save the return value, an instance of
-    // ActivityResultLauncher, as an instance variable.
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-            if (isGranted) {
-                Timber.d("Permission Granted")
-                lifecycleScope.launch {
-                    // repeatOnLifecycle launches the block in a new coroutine every time the
-                    // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
-                    repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        // Trigger the flow and start listening for values.
-                        viewModel.retrieveWeatherForCurrentLocation()
-                        viewModel.weatherData.collect { onNewDataReceived(it) }
-                    }
-                }
-            } else {
-                // Explain to the user that the feature is unavailable because the
-                // features requires a permission that the user has denied. At the
-                // same time, respect the user's decision. Don't link to system
-                // settings in an effort to convince the user to change their
-                // decision.
-                showError(LocationHandler.MissingLocationPermissionError())
-            }
-        }
-
 }

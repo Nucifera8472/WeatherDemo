@@ -3,9 +3,9 @@ package at.nuceria.weatherdemo.ui
 import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import at.nuceria.weatherdemo.data.WeatherRepository
+import at.nuceria.weatherdemo.data.managers.WeatherRepository
 import at.nuceria.weatherdemo.data.model.WeatherData
-import at.nuceria.weatherdemo.location.LocationHandler
+import at.nuceria.weatherdemo.data.location.LocationHandler
 import at.nuceria.weatherdemo.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.RuntimeException
 import javax.inject.Inject
 
 @HiltViewModel

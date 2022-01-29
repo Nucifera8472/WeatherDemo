@@ -1,4 +1,4 @@
-package at.nuceria.weatherdemo.data
+package at.nuceria.weatherdemo.data.managers
 
 import android.location.Location
 import androidx.room.withTransaction
@@ -10,14 +10,13 @@ import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.data.remote.WeatherService
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
 import at.nuceria.weatherdemo.util.epochToMillis
-import at.nuceria.weatherdemo.util.toWeatherData
-import at.nuceria.weatherdemo.util.networkBoundResource
+import at.nuceria.weatherdemo.data.local.toWeatherData
+import at.nuceria.weatherdemo.data.networkBoundResource
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 

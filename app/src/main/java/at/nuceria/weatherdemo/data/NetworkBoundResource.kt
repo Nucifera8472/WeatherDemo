@@ -1,5 +1,6 @@
-package at.nuceria.weatherdemo.util
+package at.nuceria.weatherdemo.data
 
+import at.nuceria.weatherdemo.util.Resource
 import kotlinx.coroutines.flow.*
 import timber.log.Timber
 

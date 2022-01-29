@@ -1,4 +1,4 @@
-package at.nuceria.weatherdemo.location
+package at.nuceria.weatherdemo.data.location
 
 import android.content.Context
 import android.location.Location

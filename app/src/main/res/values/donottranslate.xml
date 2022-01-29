@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="_m_s">%1$sm/s</string>
+    <string name="_mm">%1$smm</string>
+    <string name="_c">%1$s°C</string>
     <string name="m_s">m/s</string>
     <string name="c">°C</string>
     <string name="daily_temp">%1$s/%2$s°C</string>
+    <string name="percent">%1$s%%</string>
 </resources>
