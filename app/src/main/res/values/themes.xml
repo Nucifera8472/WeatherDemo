@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.WeatherDemo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-        <item name="android:windowBackground">@color/primaryDarkColor</item>
+        <item name="android:windowBackground">@color/primaryColor</item>
         <item name="android:textColor">@color/secondaryColor</item>
         <!--        <item name="android:iconTint">@color/secondaryColor</item>-->
 
@@ -15,7 +15,7 @@
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
