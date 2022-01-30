@@ -38,4 +38,10 @@ class DateTimeExtensionsKtTest {
         val time = epochTimeStamp.epochToDateTime()
         assertEquals("5.58 PM", time.to12hTime())
     }
+
+    @Test
+    fun dateTimeToLongDateString() {
+        val time = epochTimeStamp.epochToDateTime()
+        assertEquals("Jan 28", time.toLongDateString())
+    }
 }

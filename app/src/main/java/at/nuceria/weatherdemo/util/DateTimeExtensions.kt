@@ -19,6 +19,11 @@ fun Long.epochToDateTime(): DateTime = DateTime(epochToMillis(), DateTimeZone.UT
 
 fun Long.epochToMillis(): Long = this * 1000
 
+fun DateTime.toLongDateString(): String {
+    val formatter: DateTimeFormatter = DateTimeFormat.forPattern("MMM dd")
+    return formatter.print(this)
+}
+
 fun DateTime.to24hTime(): String {
     val formatter: DateTimeFormatter = DateTimeFormat.forPattern("HH:mm")
     return formatter.print(this)

@@ -24,6 +24,8 @@ class WeatherViewModel @Inject constructor(
 ) :
     ViewModel() {
 
+    var selectedForecastPosition = 0
+
     // prevent state updates from other classes
     private val _weatherData = MutableStateFlow<Resource<out WeatherData?>>(Resource.Loading(null))
 

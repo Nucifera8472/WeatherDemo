@@ -4,4 +4,6 @@
     <string name="more">More</string>
     <string name="your_location_could_not_be_determined">Your location could not be determined</string>
     <string name="mm">mm</string>
+    <string name="location_permission_required">This app requires location permission to function</string>
+    <string name="something_went_wrong">Something went wrong. Please try again later</string>
 </resources>

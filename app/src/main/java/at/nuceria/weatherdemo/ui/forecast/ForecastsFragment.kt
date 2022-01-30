@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.ForecastsFragmentBinding
@@ -54,6 +55,7 @@ class ForecastsFragment : Fragment() {
         binding.forecastsRecycler.adapter = adapter
         binding.forecastsRecycler.addItemDecoration(
             MarginItemDecoration(
+                resources.getDimensionPixelSize(R.dimen.day_forecast_page_spacing),
                 resources.getDimensionPixelSize(R.dimen.day_forecast_page_spacing)
             )
         )

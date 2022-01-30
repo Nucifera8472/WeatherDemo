@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/background_rectangle_6dp_rounded"
-    android:backgroundTint="@color/primaryColor"
+    android:backgroundTint="@color/primaryDarkColor"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:paddingStart="12dp"

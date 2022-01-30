@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="forecast_tile_spacing">4dp</dimen>
+    <dimen name="forecast_tile_spacing">8dp</dimen>
+    <dimen name="forecast_tiles_margin">16dp</dimen>
     <dimen name="day_forecast_page_spacing">24dp</dimen>
 </resources>

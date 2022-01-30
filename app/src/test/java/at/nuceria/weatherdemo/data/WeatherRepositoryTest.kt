@@ -7,12 +7,12 @@ import at.nuceria.weatherdemo.data.TestData.outdatedWeatherResponse
 import at.nuceria.weatherdemo.data.local.AppDatabase
 import at.nuceria.weatherdemo.data.local.CurrentWeatherDao
 import at.nuceria.weatherdemo.data.local.DailyWeatherDao
+import at.nuceria.weatherdemo.data.local.toWeatherData
 import at.nuceria.weatherdemo.data.managers.WeatherRepository
 import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.data.remote.WeatherService
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
-import at.nuceria.weatherdemo.data.local.toWeatherData
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -36,9 +36,9 @@ class WeatherRepositoryTest {
     private val mockCurrentWeatherDao = mockk<CurrentWeatherDao>()
     private val mockDailyWeatherDao = mockk<DailyWeatherDao>()
     private val mockAppDatabase = mockk<AppDatabase>()
-    private val location = Location("dummy").apply {
-        latitude = 22.2
-        longitude = 44.4
+    private val location = mockk<Location> {
+        every { latitude } returns 22.2
+        every { longitude } returns 44.4
     }
 
     private val sut =
@@ -196,7 +196,7 @@ class WeatherRepositoryTest {
     }
 
     private fun verifyApiFetch() {
-        coVerify { mockService.getWeatherData(location.latitude, location.longitude, any(), any()) }
+        coVerify { mockService.getWeatherData(22.2, 44.4, any(), any()) }
     }
 
     private fun verifyDataSaved(weatherData: WeatherData) {

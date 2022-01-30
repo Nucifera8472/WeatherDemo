@@ -1,8 +1,10 @@
 package at.nuceria.weatherdemo.ui.main
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginStart
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,12 +21,17 @@ class ForeCastTileAdapter() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyWeatherDataViewHolder {
         val itemBinding =
             ItemForecastTileBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+        itemBinding.root.layoutParams.width = screenWidth / 3;
+
         return DailyWeatherDataViewHolder(itemBinding)
     }
 
     override fun onBindViewHolder(holder: DailyWeatherDataViewHolder, position: Int) {
         val item = currentList[position]
         holder.bind(item)
+
         holder.itemView.setOnClickListener {
             // show details for this tile
         }
