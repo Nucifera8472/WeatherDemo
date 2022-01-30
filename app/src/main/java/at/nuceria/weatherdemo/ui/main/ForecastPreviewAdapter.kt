@@ -95,6 +95,8 @@ class ForecastPreviewAdapter(private val itemClickListener: ItemClickListener) :
                 else String.format("%.1f", item.precipitationAmount)
             )
             itemBinding.currentWeatherIcon.transitionName = "weatherIconTransition_$adapterPosition"
+            itemBinding.day.transitionName = "dayTransition_$adapterPosition"
+            itemBinding.date.transitionName = "dateTransition_$adapterPosition"
         }
 
     }

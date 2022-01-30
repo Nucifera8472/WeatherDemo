@@ -275,15 +275,29 @@ class MainFragment : Fragment(), OnSnapPositionChangeListener,
                         ) as ForecastPreviewAdapter.DailyWeatherDataViewHolder? ?: return
 
                     // add necessary mapping to the recycler viewholder
-                    sharedElements[names[0]] = selectedViewHolder.itemBinding.currentWeatherIcon
+                    names.forEachIndexed { index, name ->
+                        when {
+                            name?.startsWith("weatherIcon") == true -> {
+                                sharedElements[names[index]] = selectedViewHolder.itemBinding.currentWeatherIcon
+                            }
+                            name?.startsWith("day") == true -> {
+                                sharedElements[names[index]] = selectedViewHolder.itemBinding.day
+                            }
+                            name?.startsWith("date") == true -> {
+                                sharedElements[names[index]] = selectedViewHolder.itemBinding.date
+                            }
+                        }
+                    }
                 }
             })
     }
 
-    private fun openDetail(position: Int) {
+    private fun openDetail() {
         val viewHolder = getSelectedForecastViewHolder()?.itemBinding
         val sharedViews = listOfNotNull(
-            viewHolder?.currentWeatherIcon
+            viewHolder?.currentWeatherIcon,
+            viewHolder?.day,
+            viewHolder?.date
         )
 
         // Exclude the shared views from the exit transition to prevent an overlapping animation of
@@ -375,7 +389,7 @@ class MainFragment : Fragment(), OnSnapPositionChangeListener,
     }
 
     override fun onForecastPreviewItemClicked(position: Int) {
-        openDetail(position)
+        openDetail()
     }
 
 }

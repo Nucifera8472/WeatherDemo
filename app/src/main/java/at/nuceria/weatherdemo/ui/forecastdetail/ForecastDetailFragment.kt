@@ -161,7 +161,19 @@ class ForecastDetailFragment : Fragment() {
             ) {
                 // Map the incoming transition name (including the position) to the image in
                 // this view.
-                sharedElements[names[0]] = binding.currentWeatherIcon
+                names.forEachIndexed { index, name ->
+                    when {
+                        name?.startsWith("weatherIcon") == true -> {
+                            sharedElements[names[index]] = binding.currentWeatherIcon
+                        }
+                        name?.startsWith("day") == true -> {
+                            sharedElements[names[index]] = binding.day
+                        }
+                        name?.startsWith("date") == true -> {
+                            sharedElements[names[index]] = binding.date
+                        }
+                    }
+                }
             }
         })
     }
