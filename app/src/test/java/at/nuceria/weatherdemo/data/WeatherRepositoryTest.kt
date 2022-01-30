@@ -12,7 +12,6 @@ import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.data.remote.WeatherService
 import at.nuceria.weatherdemo.data.remote.response.WeatherResponse
-import at.nuceria.weatherdemo.util.Resource
 import at.nuceria.weatherdemo.data.local.toWeatherData
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

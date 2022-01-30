@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import at.nuceria.weatherdemo.data.managers.WeatherRepository
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.data.location.LocationHandler
-import at.nuceria.weatherdemo.util.Resource
+import at.nuceria.weatherdemo.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

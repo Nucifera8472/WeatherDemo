@@ -16,7 +16,7 @@ import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.ForecastsFragmentBinding
 import at.nuceria.weatherdemo.ui.WeatherViewModel
 import at.nuceria.weatherdemo.util.MarginItemDecoration
-import at.nuceria.weatherdemo.util.Resource
+import at.nuceria.weatherdemo.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

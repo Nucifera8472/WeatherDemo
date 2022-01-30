@@ -1,4 +1,4 @@
-package at.nuceria.weatherdemo.util
+package at.nuceria.weatherdemo.data
 
 sealed class Resource<T>(
     val data: T? = null,

@@ -17,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.nuceria.weatherdemo.R
+import at.nuceria.weatherdemo.data.Resource
 import at.nuceria.weatherdemo.data.local.getDayIcon
 import at.nuceria.weatherdemo.data.location.LocationHandler
 import at.nuceria.weatherdemo.data.model.WeatherData
@@ -24,7 +25,7 @@ import at.nuceria.weatherdemo.databinding.MainFragmentBinding
 import at.nuceria.weatherdemo.ui.WeatherViewModel
 import at.nuceria.weatherdemo.ui.forecast.ForecastsFragment
 import at.nuceria.weatherdemo.util.MarginItemDecoration
-import at.nuceria.weatherdemo.util.Resource
+import at.nuceria.weatherdemo.util.*
 import at.nuceria.weatherdemo.util.to24hTime
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
