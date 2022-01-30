@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:fontFamily="sans-serif-medium"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -134,9 +135,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:spi_dotColor="@color/secondaryDarkColor"
+        app:spi_dotColor="@color/primaryLightColor"
         app:spi_dotMinimumSize="4dp"
-        app:spi_dotSelectedColor="@color/secondaryLightColor"
+        app:spi_dotSelectedColor="@color/white"
         app:spi_dotSelectedSize="6dp"
         app:spi_dotSize="6dp" />
 
@@ -168,11 +169,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/refreshing"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forecastTiles"
         tools:visibility="visible" />
 
 
