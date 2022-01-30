@@ -57,7 +57,6 @@
         app:layout_constraintEnd_toEndOf="@+id/temperatureUnit"
         app:layout_constraintTop_toBottomOf="@+id/wind" />
 
-
     <ImageView
         android:id="@+id/currentWeatherIcon"
         android:layout_width="150dp"
@@ -69,7 +68,6 @@
         app:tint="@color/secondaryColor"
         tools:src="@drawable/rain">
     </ImageView>
-
 
     <View
         android:id="@+id/divider"
@@ -95,19 +93,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
 
-
-    <!--    <View-->
-    <!--        android:id="@+id/forecastPanel"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-
-    <!--        android:layout_marginTop="300dp"-->
-    <!--        android:background="@color/primaryLightColor"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/currentWeatherIcon" />-->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forecastTiles"
         android:layout_width="match_parent"
@@ -124,7 +109,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details"
         app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/item_forecast_" />
+        tools:listitem="@layout/item_forecast" />
 
     <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
         android:id="@+id/viewOverflowPagerIndicator"
@@ -141,29 +126,6 @@
         app:spi_dotSelectedSize="6dp"
         app:spi_dotSize="6dp" />
 
-
-    <!--    <ImageView-->
-    <!--        android:id="@+id/imageView"-->
-    <!--        android:layout_width="40dp"-->
-    <!--        android:layout_height="40dp"-->
-    <!--        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/forecastPanel"-->
-    <!--        app:tint="@color/secondaryColor" />-->
-
-
-<!--    <ImageView-->
-<!--        android:id="@+id/more"-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        android:src="@drawable/ic_baseline_keyboard_arrow_up_24"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:tint="@color/secondaryColor" />-->
-
-
     <TextView
         android:id="@+id/loadingInfo"
         android:layout_width="wrap_content"
@@ -176,7 +138,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible" />
 
-
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="48dp"
@@ -186,6 +147,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

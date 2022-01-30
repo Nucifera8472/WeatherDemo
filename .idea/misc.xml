@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/item_forecast.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_forecast_.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_forecast_tile.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_forecast_wide.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_generic_weather_datapoint.xml" value="0.5" />
         <entry key="app/src/main/res/layout/main_activity.xml" value="0.34322916666666664" />
         <entry key="app/src/main/res/layout/main_error_view.xml" value="0.5" />
