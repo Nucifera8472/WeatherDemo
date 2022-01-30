@@ -29,6 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import kotlin.math.roundToInt
 
 @AndroidEntryPoint
@@ -45,6 +46,7 @@ class ForecastDetailFragment : Fragment() {
     }
 
     private val viewModel by activityViewModels<WeatherViewModel>()
+    private var shortAnimationDuration: Int = 0
 
     private var _binding: FragmentForecastDetailBinding? = null
 
@@ -96,6 +98,9 @@ class ForecastDetailFragment : Fragment() {
             val timeStamp = dailyData.timeStamp.epochToLocalTime(dailyData.timezoneId)
             binding.day.text = timeStamp?.dayOfWeek()?.asText
             binding.date.text = timeStamp?.toLongDateString()
+            binding.conditionTitle.text = dailyData.localizedDescription.replaceFirstChar {
+                if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+            }
 
             val adapter = MiniWeatherItemAdapter()
             binding.list.adapter = adapter
@@ -104,7 +109,7 @@ class ForecastDetailFragment : Fragment() {
                 MiniWeatherItemAdapter.WeatherItem(
                     R.drawable.chevron_double_up,
                     getString(R.string.maximum_temperature),
-                    String.format(getString(R.string._c), dailyData.minTemperature.roundToInt())
+                    String.format(getString(R.string._c), dailyData.maxTemperature.roundToInt())
                 ),
                 MiniWeatherItemAdapter.WeatherItem(
                     R.drawable.chevron_double_down,
@@ -172,8 +177,28 @@ class ForecastDetailFragment : Fragment() {
             override fun onTransitionEnd(transition: Transition) {
                 super.onTransitionEnd(transition)
                 // start reveal animation
-                binding.list.visibility = View.VISIBLE
+                shortAnimationDuration = resources.getInteger(android.R.integer.config_shortAnimTime)
+                reveal(binding.list)
+                reveal(binding.date)
+                reveal(binding.day)
+                reveal(binding.conditionTitle)
             }
         }))
+    }
+
+    private fun reveal(view: View) {
+        view.apply {
+            // Set the content view to 0% opacity but visible, so that it is visible
+            // (but fully transparent) during the animation.
+            alpha = 0f
+            visibility = View.VISIBLE
+
+            // Animate the content view to 100% opacity, and clear any animation
+            // listener set on the view.
+            animate()
+                .alpha(1f)
+                .setDuration(shortAnimationDuration.toLong())
+                .setListener(null)
+        }
     }
 }
