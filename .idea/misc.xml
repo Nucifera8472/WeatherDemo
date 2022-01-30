@@ -20,6 +20,7 @@
         <entry key="app/src/main/res/layout/item_forecast.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_forecast_.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_forecast_tile.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_generic_weather_datapoint.xml" value="0.5" />
         <entry key="app/src/main/res/layout/main_activity.xml" value="0.34322916666666664" />
         <entry key="app/src/main/res/layout/main_error_view.xml" value="0.5" />
         <entry key="app/src/main/res/layout/main_fragment.xml" value="0.287962962962963" />
@@ -27,8 +28,7 @@
         <entry key="app/src/main/res/layout/view_current_precipitation.xml" value="0.2625" />
         <entry key="app/src/main/res/layout/view_current_weather_details.xml" value="0.5" />
         <entry key="app/src/main/res/layout/view_current_wind.xml" value="0.67" />
-        <entry key="app/src/main/res/layout/view_precipitation_details.xml" value="0.3640625" />
-        <entry key="app/src/main/res/layout/view_temperature_details.xml" value="0.3640625" />
+        <entry key="app/src/main/res/layout/view_precipitation_details.xml" value="0.259375" />
         <entry key="app/src/main/res/layout/view_weather_data.xml" value="0.3640625" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.215625" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.215625" />

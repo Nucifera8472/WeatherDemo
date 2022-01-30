@@ -18,13 +18,18 @@ import androidx.transition.TransitionSet
 import at.nuceria.weatherdemo.R
 import at.nuceria.weatherdemo.data.Resource
 import at.nuceria.weatherdemo.data.local.getDayIcon
+import at.nuceria.weatherdemo.data.model.DailyWeatherData
 import at.nuceria.weatherdemo.data.model.WeatherData
 import at.nuceria.weatherdemo.databinding.FragmentForecastDetailBinding
 import at.nuceria.weatherdemo.ui.WeatherViewModel
+import at.nuceria.weatherdemo.util.epochToLocalTime
+import at.nuceria.weatherdemo.util.to24hTime
+import at.nuceria.weatherdemo.util.toLongDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class ForecastDetailFragment : Fragment() {
@@ -75,15 +80,68 @@ class ForecastDetailFragment : Fragment() {
             val dailyData =
                 resource.data.forecastWeatherData.getOrNull(viewModel.selectedForecastPosition)
                     ?: return
-
-            context?.let { context ->
-                binding.currentWeatherIcon.setImageDrawable(
-                    ContextCompat.getDrawable(context, dailyData.condition.getDayIcon())
-                )
-            }
+            showData(dailyData)
         }
         // data is ready, start transition
         startPostponedEnterTransition()
+    }
+
+    private fun showData(dailyData: DailyWeatherData) {
+        context?.let { context ->
+
+            binding.currentWeatherIcon.setImageDrawable(
+                ContextCompat.getDrawable(context, dailyData.condition.getDayIcon())
+            )
+
+            val timeStamp = dailyData.timeStamp.epochToLocalTime(dailyData.timezoneId)
+            binding.day.text = timeStamp?.dayOfWeek()?.asText
+            binding.date.text = timeStamp?.toLongDateString()
+
+            val adapter = MiniWeatherItemAdapter()
+            binding.list.adapter = adapter
+
+            val list = listOf(
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.chevron_double_up,
+                    getString(R.string.maximum_temperature),
+                    String.format(getString(R.string._c), dailyData.minTemperature.roundToInt())
+                ),
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.chevron_double_down,
+                    getString(R.string.minimum_temperature),
+                    String.format(getString(R.string._c), dailyData.minTemperature.roundToInt())
+                ),
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.water_outline,
+                    getString(R.string.precipitation_percentage),
+                    getString(
+                        R.string.percent,
+                        (dailyData.precipitationProbability * 100).roundToInt()
+                            .toString()
+                    )
+                ),
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.water_outline, getString(R.string.precipitation_amount),
+                    getString(
+                        R.string._mm,
+                        if (dailyData.precipitationAmount == 0f) "0"
+                        else String.format("%.1f", dailyData.precipitationAmount)
+                    )
+                ),
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.weather_sunset_up,
+                    getString(R.string.sunrise),
+                    dailyData.localSunrise?.to24hTime() ?: ""
+                ),
+                MiniWeatherItemAdapter.WeatherItem(
+                    R.drawable.weather_sunset_down,
+                    getString(R.string.sunset),
+                    dailyData.localSunset?.to24hTime() ?: ""
+                ),
+            )
+
+            adapter.submitList(list)
+        }
     }
 
     /**
@@ -114,7 +172,7 @@ class ForecastDetailFragment : Fragment() {
             override fun onTransitionEnd(transition: Transition) {
                 super.onTransitionEnd(transition)
                 // start reveal animation
-                binding.maxIcon.visibility = View.VISIBLE
+                binding.list.visibility = View.VISIBLE
             }
         }))
     }
