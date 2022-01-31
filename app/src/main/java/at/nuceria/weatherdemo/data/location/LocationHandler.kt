@@ -51,7 +51,7 @@ suspend fun FusedLocationProviderClient.awaitCurrentLocation(): Location =
         val tokenSource = CancellationTokenSource()
         try {
             getCurrentLocation(
-                LocationRequest.PRIORITY_LOW_POWER,
+                LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY,
                 tokenSource.token
             ).addOnSuccessListener { location: Location? ->
                 // In some rare situations location can be null
