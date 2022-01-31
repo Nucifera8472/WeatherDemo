@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">WeatherDemo</string>
+    <string name="refreshing">Refreshing…</string>
+    <string name="more">More</string>
+    <string name="your_location_could_not_be_determined">Your location could not be determined</string>
+    <string name="mm">mm</string>
+    <string name="location_permission_required">This app requires location permission to function</string>
+    <string name="something_went_wrong">Something went wrong. Please try again later</string>
+    <string name="precipitation_percentage">Precipitation percentage</string>
+    <string name="precipitation_amount">Precipitation amount</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sunset">Sunset</string>
+    <string name="maximum_temperature">Maximum Temperature</string>
+    <string name="minimum_temperature">Minimum Temperature</string>
+</resources>

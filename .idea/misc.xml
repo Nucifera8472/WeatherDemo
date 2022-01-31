@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable-v24/background_panel_handle.xml" value="0.3802083333333333" />
+        <entry key="app/src/main/res/drawable-v24/background_rectangle_6dp_rounded.xml" value="0.215625" />
+        <entry key="app/src/main/res/drawable/arrow_collapse_up.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_downward_24.xml" value="0.24768518518518517" />
+        <entry key="app/src/main/res/drawable/panel handle.xml" value="0.3802083333333333" />
+        <entry key="app/src/main/res/layout/current.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/current_weather_view.xml" value="0.23333333333333334" />
+        <entry key="app/src/main/res/layout/daily_forecast.xml" value="0.33425925925925926" />
+        <entry key="app/src/main/res/layout/day_forecast_fragment.xml" value="0.34322916666666664" />
+        <entry key="app/src/main/res/layout/forecast_details_fragment.xml" value="0.34322916666666664" />
+        <entry key="app/src/main/res/layout/forecasts_fragment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_day_forecast.xml" value="0.34322916666666664" />
+        <entry key="app/src/main/res/layout/fragment_forecast_detail.xml" value="0.3640625" />
+        <entry key="app/src/main/res/layout/fragment_forecast_details.xml" value="0.34322916666666664" />
+        <entry key="app/src/main/res/layout/item_forecast.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_forecast_.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/item_forecast_tile.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/item_forecast_wide.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_generic_weather_datapoint.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/main_activity.xml" value="0.34322916666666664" />
+        <entry key="app/src/main/res/layout/main_error_view.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/main_fragment.xml" value="0.287962962962963" />
+        <entry key="app/src/main/res/layout/main_weather_view.xml" value="0.5798561151079137" />
+        <entry key="app/src/main/res/layout/view_current_precipitation.xml" value="0.2625" />
+        <entry key="app/src/main/res/layout/view_current_weather_details.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/view_current_wind.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/view_precipitation_details.xml" value="0.259375" />
+        <entry key="app/src/main/res/layout/view_weather_data.xml" value="0.3640625" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.215625" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.215625" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
